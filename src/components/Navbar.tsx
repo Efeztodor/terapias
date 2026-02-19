@@ -23,7 +23,7 @@ const Navbar = () => {
   return <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between py-3 px-4">
         <a href="#inicio">
-          <img alt="Paola Paredes" className="h-16 md:h-24 w-auto" src="/lovable-uploads/a03ec1b2-a764-4519-bd71-3772e86f6928.png" />
+          <img alt="Paola Paredes" className="h-16 md:h-24 w-auto" src="/lovable-uploads/a03ec1b2-a764-4519-bd71-3772e86f6928.png" decoding="async" />
         </a>
 
         {/* Desktop */}

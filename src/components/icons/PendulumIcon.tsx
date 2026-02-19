@@ -13,6 +13,8 @@ const PendulumIcon: React.FC<PendulumIconProps> = ({ size = 24, className }) => 
     height={size}
     className={className}
     style={{ objectFit: "contain" }}
+    loading="lazy"
+    decoding="async"
   />
 );
 
