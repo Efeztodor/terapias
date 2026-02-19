@@ -1,0 +1,13 @@
+# Railway/Nixpacks: asegura Node 20 y que el build instale devDependencies
+[variables]
+# Node 20 para evitar fallos conocidos con Node 22 en Nixpacks
+NIXPACKS_NODE_VERSION = "20"
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
