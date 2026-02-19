@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { query } from "./db.js";
 
@@ -8,6 +9,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 const isDev = process.env.NODE_ENV !== "production";
+const distPath = path.join(__dirname, "..", "dist");
+const hasDist = fs.existsSync(distPath);
 
 // En desarrollo permitir cualquier origen (para poder abrir desde el móvil en la red local)
 app.use(
@@ -36,14 +39,16 @@ app.get("/api/health", async (_req, res) => {
 //   res.json(rows);
 // });
 
-// En producción servir el frontend estático (build de Vite) y SPA fallback
-if (!isDev) {
-  const distPath = path.join(__dirname, "..", "dist");
+// Servir frontend estático cuando exista dist (Railway, producción, o preview)
+// Así funciona aunque NODE_ENV no esté en "production"
+if (hasDist) {
   app.use(express.static(distPath));
   app.get("*", (req, res, next) => {
-    // No devolver index.html para rutas de API
     if (req.path.startsWith("/api")) return next();
-    res.sendFile(path.join(distPath, "index.html"));
+    const indexFile = path.join(distPath, "index.html");
+    res.sendFile(indexFile, (err) => {
+      if (err) next(err);
+    });
   });
 }
 
