@@ -16,7 +16,9 @@
     "test:watch": "vitest",
     "server": "tsx server/index.ts",
     "server:dev": "tsx watch server/index.ts",
-    "start": "tsx server/index.ts"
+    "start": "tsx server/index.ts",
+    "check:images": "node scripts/optimize-images.js",
+    "prebuild": "npm run check:images"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

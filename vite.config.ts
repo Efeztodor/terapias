@@ -29,6 +29,8 @@ export default defineConfig(async ({ mode }) => {
   },
   build: {
     target: "es2020",
+    // Optimizaciones para Railway: reducir uso de memoria durante el build
+    chunkSizeWarningLimit: 1000, // Aumentar límite de advertencia para chunks grandes
     rollupOptions: {
       output: {
         manualChunks: {
@@ -49,8 +51,12 @@ export default defineConfig(async ({ mode }) => {
     },
     cssCodeSplit: true,
     sourcemap: mode !== "production",
-    // Optimización para assets grandes
+    // Optimización para assets grandes: no inlinar imágenes grandes
     assetsInlineLimit: 4096, // Solo inlinar assets menores a 4KB
+    // Reducir uso de memoria durante el build
+    minify: "esbuild", // Usar esbuild en lugar de terser (más rápido y usa menos memoria)
+    // Optimizar el proceso de build para Railway
+    reportCompressedSize: false, // Deshabilitar cálculo de tamaño comprimido (ahorra tiempo y memoria)
   },
   // Configuración para servir archivos de public correctamente
   publicDir: "public",

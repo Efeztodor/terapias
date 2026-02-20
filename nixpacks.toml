@@ -1,16 +1,27 @@
-# Railway/Nixpacks: asegura Node 20 y que el build instale devDependencies
+# Railway/Nixpacks: configuración optimizada para evitar fallos de build
 [variables]
 # Node 20 para evitar fallos conocidos con Node 22 en Nixpacks
 NIXPACKS_NODE_VERSION = "20"
+# Optimizaciones de memoria para el build
+NODE_OPTIONS = "--max-old-space-size=1024"
+# Deshabilitar telemetría de npm para acelerar instalación
+NPM_CONFIG_TELEMETRY = "false"
 
 [phases.setup]
 nixPkgs = ["nodejs-20_x"]
 
 [phases.install]
-cmds = ["npm install --legacy-peer-deps"]
+# Optimizar instalación: usar npm install con legacy-peer-deps para mejor compatibilidad
+# Evitar npm ci que es muy estricto y puede fallar con peer dependencies
+cmds = [
+  "npm install --legacy-peer-deps --prefer-offline --no-audit --no-fund"
+]
 
 [phases.build]
-cmds = ["npm run build"]
+# Asegurar que el build tenga suficiente memoria y tiempo
+cmds = [
+  "NODE_OPTIONS='--max-old-space-size=1024' npm run build"
+]
 
 [start]
 cmd = "npm start"
