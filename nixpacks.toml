@@ -3,8 +3,11 @@
 # Node 20 para evitar fallos conocidos con Node 22 en Nixpacks
 NIXPACKS_NODE_VERSION = "20"
 
+[phases.setup]
+nixPkgs = ["nodejs-20_x"]
+
 [phases.install]
-cmds = ["npm install"]
+cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
