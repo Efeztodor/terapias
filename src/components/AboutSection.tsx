@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import aboutImg from "@/assets/about-img.jpg";
 
 const AboutSection = () => {
   return (
