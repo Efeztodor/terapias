@@ -36,10 +36,8 @@ const AboutSection = () => {
               </span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              ​Soy Ingeniera de profesión y terapeuta por vocación, con formación en Terapia de respuesta espiritual (TRE), Reestructuración espiritual, Psicogenealogía y BioReprogramación. cuento además con conocimiento en 5 leyes biológicas, una maravillosa forma de comprender el cuerpo.
-                                             
-            
-
+              ​Soy Ingeniera de profesión y terapeuta por vocación, con formación en Terapia de respuesta espiritual (TRE), Reestructuración espiritual, Psicogenealogía y BioReprogramación. Cuento además con conocimiento en 5 leyes biológicas, una maravillosa forma de comprender el cuerpo.
+            </p>
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">​Estoy para acompañarte en tu proceso de cambio y mejora en tu vida y la de tu entorno, a través de las distintas terapias según lo que requieras.
             </p>
