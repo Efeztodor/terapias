@@ -12,6 +12,17 @@ const isDev = process.env.NODE_ENV !== "production";
 const distPath = path.join(__dirname, "..", "dist");
 const hasDist = fs.existsSync(distPath);
 
+// Log para debug en Railway
+console.log("=== Server Startup ===");
+console.log("__dirname:", __dirname);
+console.log("distPath:", distPath);
+console.log("hasDist:", hasDist);
+console.log("NODE_ENV:", process.env.NODE_ENV);
+if (hasDist) {
+  const distContents = fs.readdirSync(distPath);
+  console.log("dist contents:", distContents.slice(0, 10));
+}
+
 // En desarrollo permitir cualquier origen (para poder abrir desde el móvil en la red local)
 app.use(
   cors({
@@ -42,21 +53,38 @@ app.get("/api/health", async (_req, res) => {
 // Servir frontend estático cuando exista dist (Railway, producción, o preview)
 // Así funciona aunque NODE_ENV no esté en "production"
 if (hasDist) {
-  app.use(express.static(distPath));
+  console.log("Serving static files from:", distPath);
+  app.use(express.static(distPath, { index: "index.html" }));
+  
+  // SPA fallback: todas las rutas no-API devuelven index.html
   app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) return next();
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
     const indexFile = path.join(distPath, "index.html");
-    res.sendFile(indexFile, (err) => {
-      if (err) next(err);
+    if (fs.existsSync(indexFile)) {
+      res.sendFile(indexFile);
+    } else {
+      res.status(404).json({ error: "index.html not found in dist" });
+    }
+  });
+} else {
+  console.warn("⚠️  WARNING: dist folder not found! Frontend will not be served.");
+  app.get("/", (_req, res) => {
+    res.status(503).json({
+      error: "Frontend not built",
+      message: "The dist folder does not exist. Run 'npm run build' first.",
+      distPath,
     });
   });
 }
 
 const HOST = process.env.HOST || "0.0.0.0";
 app.listen(Number(PORT), HOST, () => {
-  console.log(`Servidor API corriendo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor API corriendo en http://${HOST}:${PORT}`);
+  console.log(`📁 dist exists: ${hasDist}`);
   if (HOST === "0.0.0.0") {
-    console.log(`  Accesible en la red: http://<tu-IP>:${PORT}`);
+    console.log(`🌐 Accesible en la red: http://<tu-IP>:${PORT}`);
   }
 });
 
