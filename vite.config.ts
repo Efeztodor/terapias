@@ -49,6 +49,10 @@ export default defineConfig(async ({ mode }) => {
     },
     cssCodeSplit: true,
     sourcemap: mode !== "production",
+    // Optimización para assets grandes
+    assetsInlineLimit: 4096, // Solo inlinar assets menores a 4KB
   },
+  // Configuración para servir archivos de public correctamente
+  publicDir: "public",
   };
 });
